@@ -1,0 +1,917 @@
+/* ===================================
+   RESET & BASE STYLES
+   =================================== */
+* {
+    margin: 0; /* remove default browser margin */
+    padding: 0; /* remove default browser padding */
+    box-sizing: border-box; /* include padding and border in total width/height */
+}
+
+:root {
+    --bg-black: #000000;
+    --bg-dark: #0a0a0a;
+    --bg-darker: #050505;
+    --text-white: #ffffff;
+    --text-gray: rgba(255, 255, 255, 0.6);
+    --text-light: rgba(255, 255, 255, 0.4);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --transition: all 0.3s ease;
+}
+
+html {
+    scroll-behavior: smooth; /* smooth scrolling for anchor links */
+    overflow-x: hidden; /* prevent horizontal scrolling */
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; /* set the main page font stack */
+    background: var(--bg-black); /* set background color or image */
+    color: var(--text-white); /* set text color */
+    line-height: 1.6; /* control spacing between lines of text */
+    overflow-x: hidden; /* prevent horizontal scrolling */
+    -webkit-font-smoothing: antialiased; /* smooth font rendering on WebKit */
+    -moz-osx-font-smoothing: grayscale; /* smooth font rendering on Firefox/macOS */
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px; /* set element width */
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-black); /* set background color or image */
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2); /* set background color or image */
+    border-radius: 4px; /* round corners */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3); /* set background color or image */
+}
+
+::selection {
+    background: rgba(255, 255, 255, 0.2); /* set background color or image */
+    color: white; /* set text color */
+}
+
+/* Container */
+.container {
+    max-width: 1400px; /* limit element width */
+    margin: 0 auto; /* remove default browser margin */
+    padding: 0 2rem; /* remove default browser padding */
+}
+
+/* ===================================
+   LOADING SCREEN
+   =================================== */
+.loading-screen {
+    position: fixed; /* set how the element is positioned */
+    inset: 0; /* set top/right/bottom/left in one property */
+    z-index: 9999; /* stack element above others */
+    background: var(--bg-black); /* set background color or image */
+    display: flex; /* choose layout mode for this element */
+    align-items: center; /* align child elements vertically in flex/grid */
+    justify-content: center; /* distribute child elements along main axis */
+    transition: opacity 0.5s ease; /* smoothly animate property changes */
+}
+
+.loading-screen.hidden {
+    opacity: 0; /* set transparency level */
+    pointer-events: none; /* enable or disable pointer interaction */
+}
+
+.loading-content {
+    text-align: center; /* align text horizontally */
+}
+
+.loading-text {
+    font-size: 4rem; /* set text size */
+    font-weight: 300; /* set text thickness */
+    letter-spacing: 0.3em; /* adjust spacing between letters */
+    margin-bottom: 1rem;
+    animation: pulse 1.5s infinite; /* apply animation to this element */
+}
+
+.loading-bar {
+    height: 2px; /* set element height */
+    background: rgba(255, 255, 255, 0.3); /* set background color or image */
+    animation: loading 1.5s ease-in-out; /* apply animation to this element */
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes loading {
+    0% { width: 0; }
+    100% { width: 100%; }
+}
+
+/* ===================================
+   NAVIGATION
+   =================================== */
+.navbar {
+    position: fixed; /* set how the element is positioned */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* stack element above others */
+    padding: 1.5rem 2rem; /* remove default browser padding */
+    display: flex; /* choose layout mode for this element */
+    justify-content: space-between; /* distribute child elements along main axis */
+    align-items: center; /* align child elements vertically in flex/grid */
+    backdrop-filter: blur(12px); /* blur background behind element */
+    background: rgba(0, 0, 0, 0.3); /* set background color or image */
+    border-bottom: 1px solid var(--border-color); /* set bottom border */
+    opacity: 0; /* set transparency level */
+    transform: translateY(-100%); /* apply movement or scaling */
+    animation: slideDown 0.8s ease forwards; /* apply animation to this element */
+    animation-delay: 2s; /* delay animation start */
+}
+
+.nav-logo {
+    font-size: 1.5rem; /* set text size */
+    font-weight: 300; /* set text thickness */
+    letter-spacing: 0.3em; /* adjust spacing between letters */
+}
+
+.nav-links {
+    display: flex; /* choose layout mode for this element */
+    gap: 2rem; /* set spacing between flex/grid items */
+}
+
+.nav-links a {
+    color: var(--text-white); /* set text color */
+    text-decoration: none; /* style underline or decoration */
+    font-size: 0.875rem; /* set text size */
+    letter-spacing: 0.15em; /* adjust spacing between letters */
+    transition: var(--transition); /* smoothly animate property changes */
+}
+
+.nav-links a.logout-link:hover {
+    color: red; /* set text color */
+}
+
+.nav-links a:hover {
+    color: var(--text-gray); /* set text color */
+
+}
+
+/* Active / current navigation link */
+.nav-links a.active {
+    color: #068fff; /* set text color */
+    text-shadow: 0 0 10px rgba(6, 143, 255, 0.25);
+    position: relative; /* set how the element is positioned */
+}
+
+/* Removed active underline */
+.nav-links a.active::after {
+    content: none;
+}
+
+.nav-links a.logout-link:hover {
+    color: red !important; /* set text color */
+}
+
+@keyframes slideDown {
+    to {
+        opacity: 1; /* set transparency level */
+        transform: translateY(0); /* apply movement or scaling */
+    }
+}
+
+/* ===================================
+   HERO SECTION
+   =================================== */
+.hero {
+    position: relative; /* set how the element is positioned */
+    height: 100vh; /* set element height */
+    display: flex; /* choose layout mode for this element */
+    align-items: center; /* align child elements vertically in flex/grid */
+    justify-content: center; /* distribute child elements along main axis */
+    overflow: hidden; /* handle overflowing content */
+}
+
+.hero-background {
+    position: absolute; /* set how the element is positioned */
+    inset: 0; /* set top/right/bottom/left in one property */
+    background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&q=80'); /* set background image */
+    background-size: cover; /* control background image sizing */
+    background-position: center; /* position background image */
+    z-index: 0; /* stack element above others */
+}
+
+.hero-background::after {
+    content: ''; /* generate text for pseudo-elements */
+    position: absolute; /* set how the element is positioned */
+    inset: 0; /* set top/right/bottom/left in one property */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.5), rgba(0,0,0,1)); /* set background color or image */
+}
+
+.hero-content {
+    position: relative; /* set how the element is positioned */
+    z-index: 10; /* stack element above others */
+    text-align: center; /* align text horizontally */
+    padding: 0 1rem; /* remove default browser padding */
+}
+
+.hero-category {
+    font-size: 0.875rem; /* set text size */
+    letter-spacing: 0.3em; /* adjust spacing between letters */
+    margin-bottom: 1.5rem;
+    color: var(--text-gray); /* set text color */
+}
+
+.hero-title {
+    margin-bottom: 2rem;
+}
+
+.hero-title-line {
+    font-size: clamp(4rem, 10vw, 8rem); /* set text size */
+    font-weight: 300; /* set text thickness */
+    line-height: 1; /* control spacing between lines of text */
+    letter-spacing: -0.02em; /* adjust spacing between letters */
+    overflow: hidden; /* handle overflowing content */
+}
+
+.hero-tagline {
+    font-size: clamp(1.25rem, 3vw, 1.75rem); /* set text size */
+    font-weight: 300; /* set text thickness */
+    margin-bottom: 3rem;
+    color: var(--text-gray); /* set text color */
+    max-width: 800px; /* limit element width */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-specs {
+    display: flex; /* choose layout mode for this element */
+    gap: 3rem; /* set spacing between flex/grid items */
+    justify-content: center; /* distribute child elements along main axis */
+    font-size: 0.875rem; /* set text size */
+    letter-spacing: 0.15em; /* adjust spacing between letters */
+}
+
+.spec-item {
+    text-align: center; /* align text horizontally */
+}
+
+.spec-value {
+    font-size: 2rem; /* set text size */
+    font-weight: 300; /* set text thickness */
+    margin-bottom: 0.25rem;
+}
+
+.spec-label {
+    color: var(--text-light); /* set text color */
+}
+
+.scroll-indicator {
+    position: absolute; /* set how the element is positioned */
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%); /* apply movement or scaling */
+    display: flex; /* choose layout mode for this element */
+    flex-direction: column; /* set direction of flex items */
+    align-items: center; /* align child elements vertically in flex/grid */
+    gap: 0.5rem; /* set spacing between flex/grid items */
+    color: var(--text-light); /* set text color */
+    font-size: 0.75rem; /* set text size */
+    letter-spacing: 0.15em; /* adjust spacing between letters */
+}
+
+.scroll-arrow {
+    animation: bounce 1.5s infinite; /* apply animation to this element */
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+}
+
+/* Fade In Animations */
+.fade-in-up {
+    opacity: 0; /* set transparency level */
+    animation: fadeInUp 0.8s ease forwards; /* apply animation to this element */
+}
+
+.fade-in-up.delay-1 {
+    animation-delay: 0.2s; /* delay animation start */
+}
+
+.fade-in-up.delay-2 {
+    animation-delay: 0.4s; /* delay animation start */
+}
+
+.fade-in-up.delay-3 {
+    animation-delay: 0.6s; /* delay animation start */
+}
+
+.fade-in-up.delay-4 {
+    animation-delay: 0.8s; /* delay animation start */
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0; /* set transparency level */
+        transform: translateY(30px); /* apply movement or scaling */
+    }
+    to {
+        opacity: 1; /* set transparency level */
+        transform: translateY(0); /* apply movement or scaling */
+    }
+}
+
+/* ===================================
+   MARQUEE
+   =================================== */
+.marquee {
+    position: relative; /* set how the element is positioned */
+    overflow: hidden; /* handle overflowing content */
+    padding: 2rem 0; /* remove default browser padding */
+    border-top: 1px solid var(--border-color); /* set top border */
+    border-bottom: 1px solid var(--border-color); /* set bottom border */
+    background: rgba(255, 255, 255, 0.02); /* set background color or image */
+}
+
+.marquee-content {
+    display: flex; /* choose layout mode for this element */
+    gap: 3rem; /* set spacing between flex/grid items */
+    white-space: nowrap; /* control text wrapping */
+    font-size: 2.5rem; /* set text size */
+    font-weight: 300; /* set text thickness */
+    letter-spacing: 0.15em; /* adjust spacing between letters */
+    color: rgba(255, 255, 255, 0.2); /* set text color */
+    animation: marquee 20s linear infinite; /* apply animation to this element */
+}
+.marquee-content:hover {
+    animation-play-state: paused; /* pause animation on hover */
+    color: rgb(255, 255, 255); /* set text color */
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* ===================================
+   SHOWCASE SECTION
+   =================================== */
+.showcase {
+    padding: 8rem 0; /* remove default browser padding */
+}
+
+.section-header {
+    text-align: center; /* align text horizontally */
+    margin-bottom: 5rem;
+}
+
+.section-header h2 {
+    font-size: clamp(3rem, 7vw, 5rem); /* set text size */
+    font-weight: 300; /* set text thickness */
+    line-height: 1.1; /* control spacing between lines of text */
+    letter-spacing: -0.02em; /* adjust spacing between letters */
+    margin-bottom: 1.5rem;
+}
+
+.section-header p {
+    font-size: 1.25rem; /* set text size */
+    color: var(--text-gray); /* set text color */
+    max-width: 800px; /* limit element width */
+    margin: 0 auto; /* remove default browser margin */
+}
+
+.car-category {
+    display: grid; /* choose layout mode for this element */
+    grid-template-columns: 1fr 1fr; /* define grid column sizes */
+    gap: 3rem; /* set spacing between flex/grid items */
+    margin-bottom: 8rem;
+    align-items: center; /* align child elements vertically in flex/grid */
+    opacity: 0; /* set transparency level */
+    transform: translateY(50px); /* apply movement or scaling */
+    transition: opacity 0.8s ease, transform 0.8s ease; /* smoothly animate property changes */
+}
+
+.car-category.visible {
+    opacity: 1; /* set transparency level */
+    transform: translateY(0); /* apply movement or scaling */
+}
+
+.car-number {
+    font-size: 6rem; /* set text size */
+    font-weight: 300; /* set text thickness */
+    color: rgba(255, 255, 255, 0.1); /* set text color */
+    margin-bottom: 1rem;
+}
+
+.car-category-label {
+    font-size: 0.875rem; /* set text size */
+    letter-spacing: 0.15em; /* adjust spacing between letters */
+    color: var(--text-light); /* set text color */
+    margin-bottom: 0.5rem;
+}
+
+.car-title {
+    font-size: clamp(2rem, 4vw, 3rem); /* set text size */
+    font-weight: 300; /* set text thickness */
+    line-height: 1.1; /* control spacing between lines of text */
+    letter-spacing: -0.02em; /* adjust spacing between letters */
+    margin-bottom: 1.5rem;
+}
+
+.car-description {
+    font-size: 1.125rem; /* set text size */
+    color: var(--text-gray); /* set text color */
+    line-height: 1.7; /* control spacing between lines of text */
+    margin-bottom: 2rem;
+}
+
+.car-specs-list {
+    display: flex; /* choose layout mode for this element */
+    gap: 1.5rem; /* set spacing between flex/grid items */
+    margin-bottom: 2rem;
+}
+
+.spec-bullet {
+    font-size: 0.875rem; /* set text size */
+}
+
+.car-image {
+    position: relative; /* set how the element is positioned */
+    border-radius: 0.5rem; /* round corners */
+    overflow: hidden; /* handle overflowing content */
+}
+
+.car-image img {
+    width: 100%; /* set element width */
+    height: 500px; /* set element height */
+    object-fit: cover; /* control how media fills its box */
+    transition: transform 0.6s ease; /* smoothly animate property changes */
+}
+
+.car-image:hover img {
+    transform: scale(1.05); /* apply movement or scaling */
+}
+
+.image-overlay {
+    position: absolute; /* set how the element is positioned */
+    inset: 0; /* set top/right/bottom/left in one property */
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent); /* set background color or image */
+}
+
+.btn-outline {
+    padding: 0.75rem 2rem; /* remove default browser padding */
+    background: transparent; /* set background color or image */
+    border: 1px solid var(--border-color); /* set border style and width */
+    color: var(--text-white); /* set text color */
+    font-size: 0.875rem; /* set text size */
+    letter-spacing: 0.1em; /* adjust spacing between letters */
+    cursor: pointer; /* change mouse cursor type */
+    transition: var(--transition); /* smoothly animate property changes */
+}
+
+.btn-outline:hover {
+    background: var(--text-white); /* set background color or image */
+    color: var(--bg-black); /* set text color */
+}
+
+/* Alternate layout for even items */
+.car-category:nth-child(even) .car-image {
+    order: -1; /* change flex/grid item order */
+}
+
+/* ===================================
+   PHILOSOPHY SECTION
+   =================================== */
+.philosophy {
+    padding: 100px 0;
+    background: #000000;
+    width: 100%;
+}
+.manifesto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 0 20px;
+}
+.manifesto-card {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 40px;
+    border-radius: 20px;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.manifesto-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(56, 189, 248, 0.3);
+    box-shadow: 0 20px 50px rgba(56, 189, 248, 0.12);
+}
+.manifesto-number {
+    font-size: 14px;
+    font-weight: 700;
+    color: #38bdf8;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.manifesto-card h3 {
+    font-size: 20px;
+    color: #ffffff;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+.manifesto-card p {
+    color: #8ba1c0;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* ===================================
+   ABOUT SECTION
+   =================================== */
+.about {
+    padding: 8rem 0; /* remove default browser padding */
+}
+
+.about-grid {
+    display: grid; /* choose layout mode for this element */
+    grid-template-columns: 1fr 1fr; /* define grid column sizes */
+    gap: 4rem; /* set spacing between flex/grid items */
+    align-items: center; /* align child elements vertically in flex/grid */
+}
+
+.about-text h2 {
+    font-size: clamp(3rem, 5vw, 4rem); /* set text size */
+    font-weight: 300; /* set text thickness */
+    line-height: 1.1; /* control spacing between lines of text */
+    letter-spacing: -0.02em; /* adjust spacing between letters */
+    margin-bottom: 1.5rem;
+}
+
+.about-text p {
+    font-size: 1.125rem; /* set text size */
+    color: var(--text-gray); /* set text color */
+    line-height: 1.7; /* control spacing between lines of text */
+    margin-bottom: 1.5rem;
+}
+
+.stats {
+    display: flex; /* choose layout mode for this element */
+    gap: 2rem; /* set spacing between flex/grid items */
+    margin-top: 2rem;
+}
+
+.stat-item {
+    text-align: left; /* align text horizontally */
+}
+
+.stat-value {
+    font-size: 2.5rem; /* set text size */
+    font-weight: 300; /* set text thickness */
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.875rem; /* set text size */
+    color: var(--text-light); /* set text color */
+    letter-spacing: 0.1em; /* adjust spacing between letters */
+}
+
+.about-image {
+    position: relative; /* set how the element is positioned */
+    border-radius: 0.5rem; /* round corners */
+    overflow: hidden; /* handle overflowing content */
+}
+
+.about-image img {
+    width: 100%; /* set element width */
+    height: 600px; /* set element height */
+    object-fit: cover; /* control how media fills its box */
+}
+
+/* ===================================
+   CONTACT SECTION
+   =================================== */
+.contact {
+    padding: 8rem 0; /* remove default browser padding */
+    background: #0a0a0a; /* set background color or image */
+}
+
+.contact-content {
+    max-width: 1000px; /* limit element width */
+    margin: 0 auto; /* remove default browser margin */
+}
+
+.contact-form {
+    margin-top: 4rem;
+}
+
+.form-row {
+    display: grid; /* choose layout mode for this element */
+    grid-template-columns: 1fr 1fr; /* define grid column sizes */
+    gap: 1.5rem; /* set spacing between flex/grid items */
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    display: flex; /* choose layout mode for this element */
+    flex-direction: column; /* set direction of flex items */
+}
+
+.form-group label {
+    font-size: 0.875rem; /* set text size */
+    letter-spacing: 0.1em; /* adjust spacing between letters */
+    color: var(--text-gray); /* set text color */
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 1rem; /* remove default browser padding */
+    background: rgba(255, 255, 255, 0.05); /* set background color or image */
+    border: 1px solid var(--border-color); /* set border style and width */
+    border-radius: 0.25rem; /* round corners */
+    color: var(--text-white); /* set text color */
+    font-family: inherit; /* set the main page font stack */
+    font-size: 1rem; /* set text size */
+    transition: border-color 0.3s ease; /* smoothly animate property changes */
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none; /* outline style for focus */
+    border-color: rgba(255, 255, 255, 0.3); /* set border color */
+}
+
+.form-group textarea {
+    resize: none; /* allow or prevent resizing */
+}
+
+.btn-primary {
+    width: 100%; /* set element width */
+    padding: 1.5rem; /* remove default browser padding */
+    background: var(--text-white); /* set background color or image */
+    color: var(--bg-black); /* set text color */
+    border: none; /* set border style and width */
+    font-size: 0.875rem; /* set text size */
+    letter-spacing: 0.15em; /* adjust spacing between letters */
+    cursor: pointer; /* change mouse cursor type */
+    transition: var(--transition); /* smoothly animate property changes */
+}
+
+.btn-primary:hover {
+    background: rgba(255, 255, 255, 0.9); /* set background color or image */
+}
+
+/* ===================================
+   FOOTER
+   =================================== */
+.footer {
+    border-top: 1px solid var(--border-color); /* set top border */
+    padding: 3rem 0; /* remove default browser padding */
+}
+
+.footer-grid {
+    display: grid; /* choose layout mode for this element */
+    grid-template-columns: repeat(3, 1fr); /* define grid column sizes */
+    gap: 3rem; /* set spacing between flex/grid items */
+    margin-bottom: 3rem;
+}
+
+.footer-logo {
+    font-size: 1.5rem; /* set text size */
+    font-weight: 300; /* set text thickness */
+    letter-spacing: 0.3em; /* adjust spacing between letters */
+    margin-bottom: 1rem;
+}
+
+.footer-col p {
+    color: var(--text-light); /* set text color */
+    font-size: 0.875rem; /* set text size */
+}
+
+.footer-col h3 {
+    font-size: 0.875rem; /* set text size */
+    letter-spacing: 0.1em; /* adjust spacing between letters */
+    color: var(--text-gray); /* set text color */
+    margin-bottom: 1rem;
+}
+
+.footer-contact,
+.footer-social {
+    display: flex; /* choose layout mode for this element */
+    flex-direction: column; /* set direction of flex items */
+    gap: 0.5rem; /* set spacing between flex/grid items */
+    font-size: 0.875rem; /* set text size */
+    color: var(--text-light); /* set text color */
+}
+
+.footer-social a {
+    color: var(--text-light); /* set text color */
+    text-decoration: none; /* style underline or decoration */
+    transition: color 0.3s ease; /* smoothly animate property changes */
+}
+
+.footer-social a:hover {
+    color: var(--text-white); /* set text color */
+}
+
+.footer-bottom {
+    text-align: center; /* align text horizontally */
+    font-size: 0.875rem; /* set text size */
+    color: rgba(255, 255, 255, 0.3); /* set text color */
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color); /* set top border */
+}
+
+/* ===================================
+   TOAST NOTIFICATION
+   =================================== */
+.toast {
+    position: fixed; /* set how the element is positioned */
+    bottom: 2rem;
+    right: 2rem;
+    padding: 1rem 2rem; /* remove default browser padding */
+    background: var(--text-white); /* set background color or image */
+    color: var(--bg-black); /* set text color */
+    border-radius: 0.5rem; /* round corners */
+    font-size: 0.875rem; /* set text size */
+    transform: translateY(200%); /* apply movement or scaling */
+    transition: transform 0.3s ease; /* smoothly animate property changes */
+    z-index: 10000; /* stack element above others */
+}
+
+.toast.show {
+    transform: translateY(0); /* apply movement or scaling */
+}
+
+/* ===================================
+   SCROLL ANIMATIONS
+   =================================== */
+.fade-in-scroll {
+    opacity: 0; /* set transparency level */
+    transform: translateY(50px); /* apply movement or scaling */
+    transition: opacity 0.8s ease, transform 0.8s ease; /* smoothly animate property changes */
+}
+
+.fade-in-scroll.visible {
+    opacity: 1; /* set transparency level */
+    transform: translateY(0); /* apply movement or scaling */
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+@media (max-width: 768px) {
+    .nav-links {
+        gap: 1rem; /* set spacing between flex/grid items */
+    }
+    
+    .nav-links a {
+        font-size: 0.75rem; /* set text size */
+    }
+    
+    .hero-specs {
+        flex-direction: column; /* set direction of flex items */
+        gap: 1.5rem; /* set spacing between flex/grid items */
+    }
+    
+    .car-category,
+    .about-grid {
+        grid-template-columns: 1fr; /* define grid column sizes */
+        gap: 2rem; /* set spacing between flex/grid items */
+    }
+    
+    .car-category:nth-child(even) .car-image {
+        order: 0; /* change flex/grid item order */
+    }
+    
+    .manifesto-grid {
+        grid-template-columns: 1fr; /* define grid column sizes */
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr; /* define grid column sizes */
+    }
+    
+    .footer-grid {
+        grid-template-columns: 1fr; /* define grid column sizes */
+    }
+    
+    .stats {
+        flex-direction: column; /* set direction of flex items */
+    }
+    
+    .car-image img,
+    .about-image img {
+        height: 400px; /* set element height */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 1rem; /* remove default browser padding */
+    }
+    
+    .loading-text {
+        font-size: 2.5rem; /* set text size */
+    }
+    
+    .navbar {
+        padding: 1rem; /* remove default browser padding */
+    }
+    
+    .hero-specs .spec-value {
+        font-size: 1.5rem; /* set text size */
+    }
+    
+    .car-number {
+        font-size: 4rem; /* set text size */
+    }
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    border-radius: 24px;
+    transition: all 0.3s ease;
+}
+
+.dropdown-btn:hover,
+.dropdown-btn:active {
+    background: #38bdf8;
+    color: #0f172a;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+}
+
+/* Ensure the container stays hidden by default */
+.dropdown-menu {
+    display: none; 
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 220px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 22px;
+    padding: 15px;
+    z-index: 10000; /* Extremely high z-index stops it from clipping behind images */
+    margin-top: 10px;
+}
+
+/* This is the missing link! It forces the layout to display when clicked */
+.dropdown.open .dropdown-menu {
+    display: block !important;
+}
+
+
+.dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 16px;
+    color: #e2e8f0;
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu a.active {
+    background: #38bdf8;
+    color: #0f172a;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+}
+
+.dropdown-menu a.sign_up {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+
+.dropdown-menu a.sign_up:hover {
+    background-color: #0056b3;
+}
+

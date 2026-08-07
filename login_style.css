@@ -1,0 +1,762 @@
+/* ===================================
+   RESET & BASE STYLES
+   =================================== */
+* { /* apply styles to every element */
+    margin: 0; /* remove default browser margin */
+    padding: 0; /* remove default browser padding */
+    box-sizing: border-box; /* include padding and border in width/height calculations */
+}
+
+:root { /* define reusable CSS variables */
+    --bg-black: #000000; /* black background color */
+    --bg-dark: #0a0a0a; /* very dark gray */
+    --bg-darker: #050505; /* almost black */
+    --text-white: #ffffff; /* pure white text */
+    --text-gray: rgba(255, 255, 255, 0.6); /* translucent white for secondary text */
+    --text-light: rgba(255, 255, 255, 0.4); /* even lighter translucent white */
+    --border-color: rgba(255, 255, 255, 0.1); /* subtle border color */
+    --transition: all 0.3s ease; /* default transition shorthand */
+}
+
+html {
+    scroll-behavior: smooth; /* smooth scrolling for anchor links */
+    overflow-x: hidden; /* prevent horizontal scrollbars */
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; /* main page font stack */
+    background: var(--bg-black); /* dark page background */
+    color: var(--text-white); /* default text color */
+    line-height: 1.6; /* spacing between lines */
+    overflow-x: hidden; /* prevent horizontal overflow */
+    -webkit-font-smoothing: antialiased; /* smoother font on WebKit browsers */
+    -moz-osx-font-smoothing: grayscale; /* smoother font on Firefox/macOS */
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { /* style for WebKit scrollbar */
+    width: 8px; /* scrollbar track width */
+}
+
+::-webkit-scrollbar-track { /* scrollbar track background */
+    background: var(--bg-black); /* match page background */
+}
+
+::-webkit-scrollbar-thumb { /* scrollbar thumb (the draggable part) */
+    background: rgba(255, 255, 255, 0.2); /* light translucent thumb */
+    border-radius: 4px; /* round the thumb corners */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3); /* brighter thumb on hover */
+}
+
+::selection { /* text selection styling */
+    background: rgba(255, 255, 255, 0.2); /* selection highlight */
+    color: white; /* selected text color */
+}
+
+/* Container */
+.container {
+    max-width: 1400px; /* limit content width on large screens */
+    margin: 0 auto; /* center container horizontally */
+    padding: 0 2rem; /* horizontal padding inside container */
+}
+
+/* ===================================
+   LOADING SCREEN
+   =================================== */
+.loading-screen { /* full-screen loading overlay */
+    position: fixed; /* fix it in place on the viewport */
+    inset: 0; /* top/right/bottom/left all 0 */
+    z-index: 9999; /* keep it above all other content */
+    background: var(--bg-black); /* dark background */
+    display: flex; /* center loading content */
+    align-items: center; /* vertical centering */
+    justify-content: center; /* horizontal centering */
+    transition: opacity 0.5s ease; /* fade-out transition */
+}
+
+.loading-screen.hidden {
+    opacity: 0; /* hide the screen visually */
+    pointer-events: none; /* allow clicks through when hidden */
+}
+
+.loading-content {
+    text-align: center; /* center text inside loading block */
+}
+
+.loading-text {
+    font-size: 4rem; /* large loading text */
+    font-weight: 300; /* light font weight */
+    letter-spacing: 0.3em; /* spacing between letters */
+    margin-bottom: 1rem; /* space below text */
+    animation: pulse 1.5s infinite; /* pulsing animation */
+}
+
+.loading-bar {
+    height: 2px; /* thin loading line */
+    background: rgba(255, 255, 255, 0.3); /* translucent line color */
+    animation: loading 1.5s ease-in-out; /* animated width growth */
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); } /* normal size at start/end */
+    50% { transform: scale(1.1); } /* pulse bigger halfway through */
+}
+
+@keyframes loading {
+    0% { width: 0; } /* start with zero width */
+    100% { width: 100%; } /* expand to full width */
+}
+
+/* ===================================
+   NAVIGATION
+   =================================== */
+.navbar {
+    position: fixed; /* keep navbar fixed at top */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* above most page content */
+    padding: 1.5rem 2rem; /* navbar padding */
+    display: flex; /* horizontal layout */
+    justify-content: space-between; /* space between logo and links */
+    align-items: center; /* center items vertically */
+    backdrop-filter: blur(12px); /* blurred background effect */
+    background: rgba(0, 0, 0, 0.3); /* translucent dark background */
+    border-bottom: 1px solid var(--border-color); /* subtle line below navbar */
+    opacity: 0; /* initially hidden for animation */
+    transform: translateY(-100%); /* start above view */
+    animation: slideDown 0.8s ease forwards; /* animate into place */
+    animation-delay: 2s; /* wait before animation starts */
+}
+
+.nav-logo {
+    font-size: 1.5rem; /* logo font size */
+    font-weight: 300; /* light weight text */
+    letter-spacing: 0.3em; /* space out letters */
+}
+
+.nav-links {
+    display: flex; /* horizontal list of links */
+    gap: 2rem; /* space between links */
+}
+
+.nav-links a {
+    color: var(--text-white); /* white link text */
+    text-decoration: none; /* remove underline */
+    font-size: 0.875rem; /* small text size */
+    letter-spacing: 0.15em; /* letter spacing for links */
+    transition: var(--transition); /* smooth hover transition */
+}
+
+.nav-links a.logout-link:hover {
+    color: red; /* red text on hover for logout */
+}
+
+.nav-links a:hover {
+    color: var(--text-gray); /* lighter link color on hover */
+}
+
+/* Active / current navigation link */
+.nav-links a.active {
+    color: #068fff; /* bright blue for active nav */
+    text-shadow: 0 0 10px rgba(6, 143, 255, 0.25); /* glow effect */
+    position: relative; /* allow absolute pseudo-element */
+}
+
+.nav-links a.active::after {
+    content: ''; /* pseudo-element used for underline */
+    position: absolute; /* position relative to active link */
+    left: 50%;
+    transform: translateX(-50%); /* center underline */
+    bottom: -6px; /* place just below link text */
+    width: 60%; /* underline width */
+    height: 3px; /* underline thickness */
+    background: linear-gradient(90deg, rgba(6,143,255,0.9), rgba(56,189,248,0.6)); /* gradient underline */
+    border-radius: 2px; /* rounded ends */
+    box-shadow: 0 6px 18px rgba(6,143,255,0.12); /* soft glow below */
+}
+
+.nav-links a.logout-link:hover {
+    color: red !important; /* force red on hover for logout link */
+}
+
+@keyframes slideDown {
+    to {
+        opacity: 1; /* fade in nav */
+        transform: translateY(0); /* slide nav down into place */
+    }
+}
+
+/* ===================================
+   HERO SECTION
+   =================================== */
+.hero {
+    position: relative; /* contain absolute background */
+    height: 100vh; /* full viewport height */
+    display: flex; /* use flex layout */
+    align-items: center; /* center vertically */
+    justify-content: center; /* center horizontally */
+    overflow: hidden; /* hide overflow from background */
+}
+
+.hero-background {
+    position: absolute; /* sit behind hero content */
+    inset: 0; /* fill entire hero area */
+    background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&q=80'); /* hero background image */
+    background-size: cover; /* cover entire area */
+    background-position: center; /* center the image */
+    z-index: 0; /* behind content */
+}
+
+.hero-background::after {
+    content: '';
+    position: absolute;
+    inset: 0; /* overlay full hero background */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.5), rgba(0,0,0,1)); /* dark gradient overlay */
+}
+
+.hero-content {
+    position: relative; /* stack above background */
+    z-index: 10; /* bring content forward */
+    text-align: center; /* center text */
+    padding: 0 1rem; /* horizontal padding */
+}
+
+.hero-category {
+    font-size: 0.875rem; /* smaller category text */
+    letter-spacing: 0.3em; /* spaced letters */
+    margin-bottom: 1.5rem; /* space below */
+    color: var(--text-gray); /* secondary text color */
+}
+
+.hero-title {
+    margin-bottom: 2rem; /* space below title */
+}
+
+.hero-title-line {
+    font-size: clamp(4rem, 10vw, 8rem); /* responsive large heading */
+    font-weight: 300; /* light title weight */
+    line-height: 1; /* tight line spacing */
+    letter-spacing: -0.02em; /* slight negative letter spacing */
+    overflow: hidden; /* hide overflow if needed */
+}
+
+.hero-tagline {
+    font-size: clamp(1.25rem, 3vw, 1.75rem); /* responsive tagline size */
+    font-weight: 300; /* light weight */
+    margin-bottom: 3rem; /* space under tagline */
+    color: var(--text-gray); /* muted text color */
+    max-width: 800px; /* limit tagline width */
+    margin-left: auto; /* center within parent */
+    margin-right: auto; /* center within parent */
+}
+
+.hero-specs {
+    display: flex; /* horizontal stats layout */
+    gap: 3rem; /* space between items */
+    justify-content: center; /* center stats */
+    font-size: 0.875rem; /* small stat text */
+    letter-spacing: 0.15em; /* spacing between letters */
+}
+
+.spec-item {
+    text-align: center; /* center each spec item */
+}
+
+.spec-value {
+    font-size: 2rem; /* large number text */
+    font-weight: 300; /* light text weight */
+    margin-bottom: 0.25rem; /* space below value */
+}
+
+.spec-label {
+    color: var(--text-light); /* lighter label text */
+}
+
+.scroll-indicator {
+    position: absolute; /* position at bottom center */
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%); /* center horizontally */
+    display: flex; /* stack arrow and text */
+    flex-direction: column; /* vertical layout */
+    align-items: center;
+    gap: 0.5rem; /* space between items */
+    color: var(--text-light); /* light instruction text */
+    font-size: 0.75rem; /* small font size */
+    letter-spacing: 0.15em; /* letter spacing */
+}
+
+.scroll-arrow {
+    animation: bounce 1.5s infinite; /* arrow bouncing animation */
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); } /* arrow at rest */
+    50% { transform: translateY(10px); } /* arrow moves down */
+}
+
+/* Fade In Animations */
+.fade-in-up {
+    opacity: 0; /* start hidden */
+    animation: fadeInUp 0.8s ease forwards; /* fade up into view */
+}
+
+.fade-in-up.delay-1 {
+    animation-delay: 0.2s; /* delay fade-in by 0.2s */
+}
+
+.fade-in-up.delay-2 {
+    animation-delay: 0.4s; /* delay fade-in by 0.4s */
+}
+
+.fade-in-up.delay-3 {
+    animation-delay: 0.6s; /* delay fade-in by 0.6s */
+}
+
+.fade-in-up.delay-4 {
+    animation-delay: 0.8s; /* delay fade-in by 0.8s */
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0; /* start transparent */
+        transform: translateY(30px); /* start slightly below */
+    }
+    to {
+        opacity: 1; /* end fully visible */
+        transform: translateY(0); /* end in place */
+    }
+}
+
+/* ===================================
+   MARQUEE
+   =================================== */
+.marquee {
+    position: relative; /* contain the moving text */
+    overflow: hidden; /* hide overflow outside the box */
+    padding: 2rem 0; /* vertical padding */
+    border-top: 1px solid var(--border-color); /* top border */
+    border-bottom: 1px solid var(--border-color); /* bottom border */
+    background: rgba(255, 255, 255, 0.02); /* subtle background */
+}
+
+.marquee-content {
+    display: flex; /* horizontal marquee layout */
+    gap: 3rem; /* space between words/items */
+    white-space: nowrap; /* keep text on one line */
+    font-size: 2.5rem; /* large marquee text */
+    font-weight: 300; /* light font weight */
+    letter-spacing: 0.15em; /* spaced letters */
+    color: rgba(255, 255, 255, 0.2); /* faint text color */
+    animation: marquee 20s linear infinite; /* slow continuous scroll */
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0); } /* start at normal position */
+    100% { transform: translateX(-50%); } /* move left half the width */
+}
+
+/* ===================================
+   SHOWCASE SECTION
+   =================================== */
+.showcase {
+    padding: 8rem 0; /* vertical spacing for section */
+}
+
+.section-header {
+    text-align: center; /* center section heading */
+    margin-bottom: 5rem; /* space below header */
+}
+
+.section-header h2 {
+    font-size: clamp(3rem, 7vw, 5rem); /* responsive header size */
+    font-weight: 300; /* light heading weight */
+    line-height: 1.1; /* line spacing */
+    letter-spacing: -0.02em; /* small negative letter spacing */
+    margin-bottom: 1.5rem; /* space below heading */
+}
+
+.section-header p {
+    font-size: 1.25rem; /* paragraph size */
+    color: var(--text-gray); /* muted text color */
+    max-width: 800px; /* limit paragraph width */
+    margin: 0 auto; /* center paragraph */
+}
+
+.car-category {
+    display: grid; /* two-column layout */
+    grid-template-columns: 1fr 1fr; /* equal columns */
+    gap: 3rem; /* gap between columns */
+    margin-bottom: 8rem; /* spacing below category */
+    align-items: center; /* center items vertically */
+    opacity: 0; /* start hidden for animation */
+    transform: translateY(50px); /* start slightly lower */
+    transition: opacity 0.8s ease, transform 0.8s ease; /* animate into place */
+}
+/* ===================================
+   FOOTER
+   =================================== */
+.footer {
+    border-top: 1px solid var(--border-color); /* top border for footer */
+    padding: 3rem 0; /* vertical footer space */
+}
+
+.footer-grid {
+    display: grid; /* footer column layout */
+    grid-template-columns: repeat(3, 1fr); /* three columns */
+    gap: 3rem; /* spacing between columns */
+    margin-bottom: 3rem; /* space below grid */
+}
+
+.footer-logo {
+    font-size: 1.5rem; /* footer logo size */
+    font-weight: 300; /* light weight */
+    letter-spacing: 0.3em; /* spaced letters */
+    margin-bottom: 1rem; /* space below logo */
+}
+
+.footer-col p {
+    color: var(--text-light); /* light text color for paragraphs */
+    font-size: 0.875rem; /* small paragraph size */
+}
+
+.footer-col h3 {
+    font-size: 0.875rem; /* heading size */
+    letter-spacing: 0.1em; /* small letter spacing */
+    color: var(--text-gray); /* muted heading color */
+    margin-bottom: 1rem; /* space below heading */
+}
+
+.footer-contact,
+.footer-social {
+    display: flex; /* vertical list layout */
+    flex-direction: column; /* stack items vertically */
+    gap: 0.5rem; /* small gap between items */
+    font-size: 0.875rem; /* text size */
+    color: var(--text-light); /* light text color */
+}
+
+.footer-social a {
+    color: var(--text-light); /* link color */
+    text-decoration: none; /* remove underline */
+    transition: color 0.3s ease; /* smooth hover color change */
+}
+
+.footer-social a:hover {
+    color: var(--text-white); /* make social links white on hover */
+}
+
+.footer-bottom {
+    text-align: center; /* center footer bottom text */
+    font-size: 0.875rem; /* small text size */
+    color: rgba(255, 255, 255, 0.3); /* faint text color */
+    padding-top: 2rem; /* spacing above bottom area */
+    border-top: 1px solid var(--border-color); /* line above bottom area */
+}
+
+
+.container {
+    width: min(100%, 420px); /* limit container width for form/card layout */
+    padding: 10px; /* inner spacing */
+    z-index: 1; /* keep container above background content */
+}
+
+.card {
+    width: 100%; /* full width inside container */
+    padding: 28px 24px; /* inner card spacing */
+    background: rgba(255, 255, 255, 0.12); /* translucent card background */
+    backdrop-filter: blur(16px); /* blur content behind card */
+    -webkit-backdrop-filter: blur(16px); /* WebKit-specific blur */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* subtle border */
+    border-radius: 20px; /* rounded corners */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* card shadow */
+    color: #ffffff; /* card text color */
+}
+
+.card h1 {
+    font-size: 24px; /* heading size */
+    margin-bottom: 4px; /* small gap below heading */
+    color: #ffffff; /* heading color */
+    text-align: center; /* center heading text */
+}
+
+.card h4 {
+    font-size: 13px; /* subheading size */
+    color: #94a3b8; /* muted subheading color */
+    font-weight: 400; /* normal weight */
+    margin-bottom: 24px; /* spacing below */
+    margin-top: 12px; /* spacing above */
+    text-align: center; /* center text */
+}
+
+.footer-links p{ /* paragraph inside footer links */
+    text-align: center; /* center text */
+    color: #64748b; /* gray text color */
+    margin: 12px; /* spacing around paragraph */
+}
+.Input_group {
+    position: relative; /* for floating label positioning */
+    width: 100%; /* full container width */
+    margin: 24px 0; /* vertical spacing between fields */
+}
+
+.Input_group input, 
+.Input_group select {
+    width: 100%; /* full width fields */
+    padding: 12px 14px; /* field padding */
+    border: 1.5px solid #068fff; /* blue border */
+    border-radius: 20px; /* rounded field corners */
+    font-size: 14px; /* input text size */
+    outline: none; /* remove default focus outline */
+    background: transparent; /* transparent background */
+}
+
+.Input_group label {
+    position: absolute; /* floating label position */
+    top: 50%; /* center vertically */
+    left: 12px; /* align to left edge */
+    transform: translateY(-50%); /* truly center vertically */
+    color: #64748b; /* gray label color */
+    font-size: 14px; /* label font size */
+    pointer-events: none; /* allow clicks through label */
+    transition: all 0.3s ease; /* smooth move on focus */
+    background: transparent; /* transparent background */
+    padding: 0 4px; /* small padding to avoid overlap */
+}
+.Input_group input:focus + label,
+.Input_group input:not(:placeholder-shown) + label {
+    top: -8px; /* move label above input */
+    font-size: 13px; /* shrink label text */
+    color: #068fff; /* highlight label color */
+    background: transparent; /* keep background transparent */
+}
+.hero_btns {
+    display: flex; /* align buttons horizontally */
+    gap: 10px; /* space between buttons */
+    margin-top: 20px; /* spacing above button group */
+}
+
+.btn {
+    flex: 1; /* buttons share available space */
+    text-align: center; /* center button text */
+    background: #08428c; /* blue button background */
+    color: #ffffff; /* white button text */
+    text-decoration: none; /* remove underline if link */
+    font-weight: 600; /* bold button text */
+    font-size: 12px; /* button text size */
+    text-transform: uppercase; /* uppercase letters */
+    padding: 12px 8px; /* button padding */
+    letter-spacing: 0.5px; /* spacing between letters */
+    transition: all 0.3s ease; /* smooth hover transition */
+    border-radius: 18px; /* pill-shaped corners */
+}
+
+.findcode {
+    margin-top: 1rem;
+}
+
+.findcode-link {
+    color: #68d391;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.findcode-link:hover {
+    color: #a7f3d0;
+    text-shadow: 0 0 12px rgba(167, 243, 208, 0.5);
+}
+
+.btn:hover {
+    background: #38bdf8; /* lighter blue on hover */
+    color: #0f172a; /* dark text on hover */
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.5); /* glowing shadow on hover */
+}
+
+
+
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+@media (max-width: 768px) {
+    .container {
+        width: min(100%, 420px); /* container width adapts */
+        padding: 0 1.25rem; /* smaller horizontal padding */
+    }
+
+    .card {
+        padding: 22px 18px; /* smaller card padding */
+        border-radius: 16px; /* slightly smaller corners */
+    }
+
+    .card h1 {
+        font-size: 20px; /* smaller heading on medium screens */
+    }
+
+    .card h4 {
+        font-size: 12px; /* smaller subheading */
+    }
+
+    .Input_group input,
+    .Input_group select {
+        padding: 10px 12px; /* smaller field padding */
+        font-size: 13px; /* smaller input text */
+        border-radius: 16px; /* less rounded fields */
+    }
+
+    .Input_group label {
+        font-size: 13px; /* smaller label text */
+    }
+
+    .hero_btns {
+        flex-direction: column; /* stack buttons vertically */
+        gap: 12px; /* spacing between stacked buttons */
+    }
+
+    .btn {
+        font-size: 13px; /* slightly larger button text */
+        padding: 10px 10px; /* adjust button padding */
+        border-radius: 16px; /* slightly smaller border radius */
+    }
+
+    /* small-screen navbar, hero and loading tweaks */
+    .navbar {
+        padding: 1rem 1.25rem; /* smaller navbar padding */
+    }
+
+    .loading-text {
+        font-size: 3rem; /* smaller loading text */
+    }
+
+    .hero {
+        height: auto; /* allow hero to grow */
+        padding: 6rem 0; /* vertical spacing on hero */
+        display: flex; /* enable flex layout */
+        flex-direction: column; /* stack hero content vertically */
+        align-items: center; /* center hero items */
+        gap: 1.5rem; /* spacing between hero blocks */
+    }
+
+    .hero-content {
+        padding: 0 0.5rem; /* smaller hero content padding */
+    }
+
+    .nav-links {
+        display: none; /* hide nav links on medium screens */
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr; /* stack footer columns */
+    }
+
+    .container {
+        margin-top: 2rem; /* add top margin on medium screens */
+        width: min(100%, 420px); /* keep max width */
+        padding: 0 1rem; /* reduced horizontal padding */
+    }
+
+    .card {
+        max-width: 420px; /* limit card width */
+        margin: 0 auto; /* center card */
+    }
+
+    .hero-title-line {
+        font-size: clamp(2.5rem, 8vw, 4.5rem); /* smaller hero heading */
+        line-height: 1.05; /* tighter line spacing */
+    }
+
+    .marquee-content {
+        font-size: 2rem; /* smaller marquee text */
+    }
+
+    .spec-value {
+        font-size: 1.5rem; /* smaller stat values */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 100%; /* full width container on small screens */
+        padding: 0 1rem; /* small side padding */
+    }
+
+    .card {
+        padding: 18px 14px; /* smaller card padding */
+        border-radius: 14px; /* smaller corner radius */
+    }
+
+    .card h1 {
+        font-size: 18px; /* smaller card heading */
+    }
+
+    .card h4 {
+        font-size: 11px; /* smaller card subheading */
+    }
+
+    .Input_group input,
+    .Input_group select {
+        padding: 10px 10px; /* smaller field padding */
+        font-size: 13px; /* input text size */
+    }
+
+    .Input_group label {
+        top: -6px; /* adjust label position */
+    }
+
+    .hero_btns {
+        gap: 10px; /* smaller gap between buttons */
+    }
+
+    .btn {
+        font-size: 12px; /* smaller button text */
+        padding: 10px 8px; /* smaller button padding */
+    }
+
+    /* extra mobile tweaks */
+    .navbar {
+        padding: 0.75rem 1rem; /* smallest navbar padding */
+    }
+
+    .loading-text {
+        font-size: 2.5rem; /* smaller loading message */
+    }
+
+    .hero-tagline {
+        font-size: 1rem; /* smaller tagline text */
+        max-width: 100%; /* allow full width */
+    }
+
+    /* reduce large hero headings and marquee on small screens */
+    .hero-title-line {
+        font-size: clamp(1.6rem, 10vw, 3rem); /* much smaller hero heading */
+        line-height: 1.05; /* tight line spacing */
+        letter-spacing: -0.01em; /* slight letter-spacing change */
+    }
+
+    .marquee-content {
+        font-size: 1.2rem; /* smaller marquee text */
+    }
+
+    .spec-value {
+        font-size: 1rem; /* smaller stat values */
+    }
+
+    .spec-value {
+        font-size: 1.25rem; /* override to slightly larger value if needed */
+    }
+
+    .Input_group textarea {
+        min-height: 100px; /* ensure textarea has enough height */
+    }
+}
+
+
+
+
+
+
